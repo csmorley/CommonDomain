@@ -16,14 +16,18 @@ namespace CommonDomain.Aggregates
         public Identity(string id)
         {
             this.id = id;
+            this.isConstructedWithGuid = false;
         }
 
         public Identity(Guid id)
         {
             this.id = id.ToString();
+            this.isConstructedWithGuid = true;
         }
 
-        public readonly string id;
+        protected readonly bool isConstructedWithGuid;
+        protected readonly string id;
+        public bool IsConvertableToGuid { get { return this.isConstructedWithGuid; } }
 
         public string Id { get { return this.id; } }
 
@@ -47,6 +51,17 @@ namespace CommonDomain.Aggregates
         public override string ToString()
         {
             return this.GetType().Name + " [Id=" + this.id + "]";
+        }
+    }
+
+    public static class IdentityHelper
+    {
+        public static Guid AsGuid(this Identity input)
+        {
+            if (input.IsConvertableToGuid == false)
+                throw new InvalidCastException("not possible to express as GUID");
+
+            return new Guid(input.Id);
         }
     }
 }

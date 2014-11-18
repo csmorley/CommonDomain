@@ -8,15 +8,13 @@ namespace CartExample.Domain.Carts
 {
     public class CartCreated
     {
-        public CartCreated(string username, Guid id)
+        public CartCreated(CartId id)
         {
-            this.Username = username;
             this.CartId = id;
             this.CreatedOn = DateTime.UtcNow;
         }
 
-        public readonly string Username;
-        public readonly Guid CartId;
+        public readonly CartId CartId;
         public readonly DateTime CreatedOn;
     }
 }

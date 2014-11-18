@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CommonDomain.Wireup;
 using CommonDomain.Messaging;
+using CommonDomain.Aggregates;
 
 namespace CommonDomain.Mediator
 {
@@ -61,10 +62,11 @@ namespace CommonDomain.Mediator
         }
 
 
-        public Result PublishEvent(object eventToPublish, bool isReplay)
-        {            
-            var type = (typeof(IEventHandler<>)).MakeGenericType(eventToPublish.GetType());
-            var handlers = resolver.GetInstances(type); // get instances, we will push to many listeners
+        public Result PublishEvent(EventEnvelope envelope, bool isReplay)
+        {
+            var eventType = envelope.EventObject.GetType();
+            var handlerType = (typeof(IEventHandler<>)).MakeGenericType(eventType);
+            var handlers = resolver.GetInstances(handlerType); // get instances, we will push to many listeners
             var response = new Result();
             List<Exception> exceptions = null;
 
@@ -77,34 +79,10 @@ namespace CommonDomain.Mediator
                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod,
                         null,
                         CallingConventions.HasThis,
-                        new[] { eventToPublish.GetType(), typeof(bool) },
+                        new[] { typeof(Identity), envelope.EventObject.GetType(), typeof(bool) },
                         null);
 
-                    method.Invoke(handler, new[] { eventToPublish, isReplay });
-                }
-                catch (Exception e)
-                {
-                    (exceptions ?? (exceptions = new List<Exception>())).Add(e);
-                }
-            }
-
-            if (exceptions != null)
-                response.Exception = new AggregateException(exceptions);
-
-            return response;
-        }
-
-        public Result PublishEvent<TEvent>(TEvent eventToPublish, bool isReplay) where TEvent: class
-        {
-            var handlers = this.resolver.GetInstances<IEventHandler<TEvent>>();  // get instances, we will push to many listeners
-            var response = new Result();
-            List<Exception> exceptions = null;
-
-            foreach (var handler in handlers)
-            {
-                try
-                {
-                    handler.Handle(eventToPublish, isReplay);
+                    method.Invoke(handler, new[] { envelope.AggregateId, envelope.EventObject, isReplay });
                 }
                 catch (Exception e)
                 {

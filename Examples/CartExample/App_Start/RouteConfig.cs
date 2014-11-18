@@ -1,9 +1,11 @@
 ﻿using CartExample.Domain.Cart;
+using CartExample.Domain.Carts;
 using CartExample.Domain.Products;
 using CartExample.Infrastructure;
 using CommonDomain.Aggregates;
 using CommonDomain.Implementation;
 using CommonDomain.Mediator;
+using CommonDomain.Messaging;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 using System;
@@ -41,17 +43,12 @@ namespace CartExample
             );
 
 
-            /*var product1 = new Product(new ProductId("11-11-1111"));
-            var product2 = new Product(new ProductId("22-22-2222"));
-            var product3 = new Product(new ProductId("33-33-3333"));
-            var product4 = new Product(new ProductId("44-44-4444"));*/
+            var product1 = new Product(new ProductId("11-11-1111"), "Book 1");
+            var product2 = new Product(new ProductId("22-22-2222"), "Book 2");
+            var product3 = new Product(new ProductId("33-33-3333"), "Book 3");
+            var product4 = new Product(new ProductId("44-44-4444"), "Book 4");
 
-            var product1 = new Product(Guid.NewGuid(), "11-11-1111");
-            var product2 = new Product(Guid.NewGuid(), "22-22-2222");
-            var product3 = new Product(Guid.NewGuid(), "33-33-3333");
-            var product4 = new Product(Guid.NewGuid(), "44-44-4444");
-
-            var cart = new Cart(Guid.NewGuid(), "chris");
+            var cart = new Cart(new CartId(Guid.NewGuid()));
             
             cart.AddToCart(product1, 1);
             cart.AddToCart(product1, 1);
@@ -65,12 +62,9 @@ namespace CartExample
 
             cart.AddToCart(product4, 3);
             cart.RemoveFromCart(product4, -2);
-
+            
             cart.Checkout();
-
-            var aggregate = cart as IAggregate;
-            var events = aggregate.GetUncommittedEvents();
-
+            
             var container = new Container();
 
             container.RegisterSingle<Database>();
@@ -88,10 +82,13 @@ namespace CartExample
             var mediator = new Mediator(new SimpleInjectorDependencyResolver(container));
 
             mediator.RequestQuery(new NameTestQuery() { Name = "Chris" });
-
+            
+            var aggregate = cart as IAggregate;
+            var events = aggregate.GetUncommittedEvents();
             foreach(var e in events)
             {
-                mediator.PublishEvent(e, false);
+                var envelope = new EventEnvelope(aggregate, e);
+                mediator.PublishEvent(envelope, false);
             }
 
             /*container.RegisterAll<IEventHandler<NewUserAddedEvent>>(

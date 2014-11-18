@@ -6,6 +6,7 @@ using CommonDomain.Mediator;
 using CartExample.Domain.Carts;
 using CartExample.Infrastructure;
 using CartExample.Domain;
+using CommonDomain.Aggregates;
 
 namespace CartExample.Projections
 {
@@ -18,16 +19,16 @@ namespace CartExample.Projections
             this.database = database;
         }
 
-        public void Handle(ProductAddedToCart eventToHandle, bool isReplay)
+        public void Handle(Identity senderId, ProductAddedToCart eventToHandle, bool isReplay)
         {
 
         }
 
-        public void Handle(ProductRemovedFromCart eventToHandle, bool isReplay)
+        public void Handle(Identity senderId, ProductRemovedFromCart eventToHandle, bool isReplay)
         {
 
         }
-        public void Handle(CartCheckedOut eventToHandle, bool isReplay)
+        public void Handle(Identity senderId, CartCheckedOut eventToHandle, bool isReplay)
         {
         }
     }

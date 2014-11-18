@@ -1,9 +1,10 @@
-﻿using CommonDomain.Messaging;
+﻿using CommonDomain.Aggregates;
+using CommonDomain.Messaging;
 
 namespace CommonDomain.Mediator
 {
     public interface IEventHandler<in TEvent> where TEvent : class
     {
-        void Handle(TEvent eventToHandle, bool isReplay);
+        void Handle(Identity senderId, TEvent eventToHandle, bool isReplay);
     }
 }

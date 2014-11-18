@@ -18,7 +18,7 @@ namespace ForUs.Common.Domain.Repositories
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
 
-        private readonly Func<Type, Guid, string> BuildStreamNameFromId;
+        private readonly Func<Type, IIdentity, string> BuildStreamNameFromId;
 
         private readonly IEventStoreConnection connection;
         private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };
@@ -28,22 +28,22 @@ namespace ForUs.Common.Domain.Repositories
         }
 
         public GetEventStoreRepository(IEventStoreConnection eventStoreConnection)
-            : this(eventStoreConnection, (t, g) => string.Format("{0}-{1}", char.ToLower(t.Name[0]) + t.Name.Substring(1), g.ToString("N")))
+            : this(eventStoreConnection, (t, g) => string.Format("{0}-{1}", char.ToLower(t.Name[0]) + t.Name.Substring(1), g.Id))
         {
         }
 
-        public GetEventStoreRepository(IEventStoreConnection eventStoreConnection, Func<Type, Guid, string> aggregateIdToStreamNameConvention)
+        public GetEventStoreRepository(IEventStoreConnection eventStoreConnection, Func<Type, IIdentity, string> aggregateIdToStreamNameConvention)
         {
             this.connection = eventStoreConnection;
             this.BuildStreamNameFromId = aggregateIdToStreamNameConvention;
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IAggregate
+        public TAggregate GetById<TAggregate>(IIdentity id) where TAggregate : class, IAggregate
         {
             return GetById<TAggregate>(id, int.MaxValue);
         }
 
-        public TAggregate GetById<TAggregate>(Guid id, int version) where TAggregate : class, IAggregate
+        public TAggregate GetById<TAggregate>(IIdentity id, int version) where TAggregate : class, IAggregate
         {
             if (version <= 0)
                 throw new InvalidOperationException("Cannot get version <= 0");
@@ -106,7 +106,7 @@ namespace ForUs.Common.Domain.Repositories
             };
             updateHeaders(commitHeaders);
 
-            var streamName = this.BuildStreamNameFromId(aggregate.GetType(), aggregate.Id);
+            var streamName = this.BuildStreamNameFromId(aggregate.GetType(), aggregate.Identity);
             var newEvents = aggregate.GetUncommittedEvents().Cast<object>().ToList();
             var originalVersion = aggregate.Version - newEvents.Count;
             var expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;

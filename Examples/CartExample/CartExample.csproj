@@ -129,6 +129,7 @@
     <Compile Include="Domain\Carts\Cart.cs" />
     <Compile Include="Domain\Carts\CartCheckedOut.cs" />
     <Compile Include="Domain\Carts\CartCreated.cs" />
+    <Compile Include="Domain\Carts\CartId.cs" />
     <Compile Include="Domain\Carts\ProductRemovedFromCart.cs" />
     <Compile Include="Domain\Carts\ProductAddedToCart.cs" />
     <Compile Include="Domain\Products\Product.cs" />

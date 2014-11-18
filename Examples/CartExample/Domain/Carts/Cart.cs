@@ -10,13 +10,14 @@ namespace CartExample.Domain.Cart
 {
     public class Cart : AggregateBase
     {
-        Dictionary<Guid, int> products = new Dictionary<Guid, int>();
+        Dictionary<ProductId, int> products = new Dictionary<ProductId, int>();
         public bool IsCheckedOut { get; private set; }
-        public string Username {get; private set;}
 
-        public Cart(Guid id, string username) : base(id)
+        public CartId Id { get; protected set; } 
+
+        public Cart(CartId id)
         {
-            RaiseEvent(new CartCreated(username, this.Id));
+            RaiseEvent(new CartCreated(id));
         }
 
         public void AddToCart(Product product, int quantity)
@@ -52,24 +53,25 @@ namespace CartExample.Domain.Cart
 
         public void Checkout()
         {
-            RaiseEvent(new CartCheckedOut(this.Id));
+            // FIX THIS!!
+            RaiseEvent(new CartCheckedOut());
         }
 
         private void Apply(ProductAddedToCart e)
         {
             int count = 0;
-            this.products.TryGetValue(e.Sku, out count);
-            this.products[e.Sku] = count + e.Quantity;
+            this.products.TryGetValue(e.ProductId, out count);
+            this.products[e.ProductId] = count + e.Quantity;
         }
 
         private void Apply(ProductRemovedFromCart e)
         {
-            int count = this.products[e.Id];
+            int count = this.products[e.ProductId];
 
             if (count + e.Quantity == 0)
-                this.products.Remove(e.Id);
+                this.products.Remove(e.ProductId);
             else
-                this.products[e.Id] += e.Quantity;
+                this.products[e.ProductId] += e.Quantity;
         }
 
         private void Apply(CartCheckedOut e)
@@ -79,7 +81,12 @@ namespace CartExample.Domain.Cart
 
         private void Apply(CartCreated e)
         {
-            this.Username = e.Username;               
+            this.Id = e.CartId;          
+        }
+
+        public override IIdentity GetId()
+        {
+            return this.Id;
         }
     }
 }

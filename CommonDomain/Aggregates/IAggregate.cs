@@ -5,7 +5,7 @@ namespace CommonDomain.Aggregates
 {	
 	public interface IAggregate
 	{
-		Guid Id { get; }
+        IIdentity Identity { get; }
 		int Version { get; }
 
 		void ApplyEvent(object @event);

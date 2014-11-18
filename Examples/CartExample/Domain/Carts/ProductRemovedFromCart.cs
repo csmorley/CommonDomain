@@ -8,13 +8,13 @@ namespace CartExample.Domain
 {
     public class ProductRemovedFromCart
     {
-        public ProductRemovedFromCart(Guid id, int quantity)
+        public ProductRemovedFromCart(ProductId id, int quantity)
         {
-            this.Id = id;
+            this.ProductId = id;
             this.Quantity = quantity;
         }
 
-        public readonly Guid Id;
+        public readonly ProductId ProductId;
         public readonly int Quantity;
     }
 }

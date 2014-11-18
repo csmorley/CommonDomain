@@ -9,6 +9,6 @@ namespace CommonDomain.Mediator
 {
     public interface IEventPublisher
     {
-        Result PublishEvent<TEvent>(TEvent eventToPublish, bool isReplay) where TEvent : class;
+        Result PublishEvent(EventEnvelope envelope, bool isReplay);
     }
 }

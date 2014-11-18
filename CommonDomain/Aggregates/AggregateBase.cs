@@ -10,21 +10,23 @@ namespace CommonDomain.Aggregates
 
         private IRouteEvents registeredRoutes;
 
-        protected AggregateBase(Guid id)
-            : this(id, null)
+        protected AggregateBase()
+            : this(null)
         {
         }
 
-        protected AggregateBase(Guid id, IRouteEvents handler)
+        protected AggregateBase(IRouteEvents handler)
         {
-            this.Id = id;
             if (handler == null) return;
 
             this.RegisteredRoutes = handler;
             this.RegisteredRoutes.Register(this);
         }
 
-        public Guid Id { get; protected set; }
+
+        public abstract IIdentity GetId();
+
+        public IIdentity Identity { get { return GetId(); } }
         public int Version { get; protected set; }
 
         protected IRouteEvents RegisteredRoutes
@@ -69,7 +71,7 @@ namespace CommonDomain.Aggregates
         IMemento IAggregate.GetSnapshot()
         {
             var snapshot = this.GetSnapshot();
-            snapshot.Id = this.Id;
+            snapshot.Id = this.Identity;
             snapshot.Version = this.Version;
             return snapshot;
         }
@@ -80,7 +82,7 @@ namespace CommonDomain.Aggregates
 
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return this.Identity.GetHashCode();
         }
         public override bool Equals(object obj)
         {
@@ -88,7 +90,7 @@ namespace CommonDomain.Aggregates
         }
         public virtual bool Equals(IAggregate other)
         {
-            return null != other && other.Id == this.Id;
+            return null != other && other.Identity == this.Identity;
         }
     }
 }

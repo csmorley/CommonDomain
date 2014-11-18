@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CartExample.Domain.Products
+namespace CartExample.Domain.Carts
 {
-    public class ProductId : Identity
+    public class CartId : Identity
     {
-        public ProductId(string id) : base(id)
+        public CartId(Guid id)
+            : base(id)
         {
         }
     }
