@@ -1,5 +1,6 @@
 ﻿using CartExample.Domain.Cart;
 using CartExample.Domain.Products;
+using CartExample.Infrastructure;
 using CommonDomain.Aggregates;
 using CommonDomain.Implementation;
 using CommonDomain.Mediator;
@@ -40,12 +41,17 @@ namespace CartExample
             );
 
 
-            var product1 = new Product(new ProductId("11-11-1111"));
+            /*var product1 = new Product(new ProductId("11-11-1111"));
             var product2 = new Product(new ProductId("22-22-2222"));
             var product3 = new Product(new ProductId("33-33-3333"));
-            var product4 = new Product(new ProductId("44-44-4444"));
+            var product4 = new Product(new ProductId("44-44-4444"));*/
 
-            var cart = new Cart("chris");
+            var product1 = new Product(Guid.NewGuid(), "11-11-1111");
+            var product2 = new Product(Guid.NewGuid(), "22-22-2222");
+            var product3 = new Product(Guid.NewGuid(), "33-33-3333");
+            var product4 = new Product(Guid.NewGuid(), "44-44-4444");
+
+            var cart = new Cart(Guid.NewGuid(), "chris");
             
             cart.AddToCart(product1, 1);
             cart.AddToCart(product1, 1);
@@ -66,6 +72,8 @@ namespace CartExample
             var events = aggregate.GetUncommittedEvents();
 
             var container = new Container();
+
+            container.RegisterSingle<Database>();
 
             container.RegisterManyForOpenGeneric(typeof(IEventHandler<>),
                 AccessibilityOption.AllTypes,

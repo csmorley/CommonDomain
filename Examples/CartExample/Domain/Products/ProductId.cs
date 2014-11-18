@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CartExample.Domain.Products
 {
-    public class ProductId
+ /*   public class ProductId
     {
         public ProductId(string id)
         {
@@ -13,5 +13,5 @@ namespace CartExample.Domain.Products
         }
 
         public readonly string Value;
-    }
+    }*/
 }

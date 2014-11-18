@@ -136,7 +136,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Projection\AverageCheckoutTime.cs" />
+    <Compile Include="Infrastructure\Database.cs" />
+    <Compile Include="Projections\AbandonedItems.cs" />
+    <Compile Include="Projections\AverageCheckoutTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

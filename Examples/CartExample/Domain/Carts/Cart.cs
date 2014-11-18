@@ -10,13 +10,13 @@ namespace CartExample.Domain.Cart
 {
     public class Cart : AggregateBase
     {
-        Dictionary<ProductId,int> products = new Dictionary<ProductId,int>();
+        Dictionary<Guid, int> products = new Dictionary<Guid, int>();
         public bool IsCheckedOut { get; private set; }
         public string Username {get; private set;}
 
-        public Cart(string username)
+        public Cart(Guid id, string username) : base(id)
         {
-            RaiseEvent(new CartCreated(username));
+            RaiseEvent(new CartCreated(username, this.Id));
         }
 
         public void AddToCart(Product product, int quantity)
@@ -26,7 +26,7 @@ namespace CartExample.Domain.Cart
             if (quantity < 1)
                 throw new InvalidOperationException("quantity must be positive");
 
-            RaiseEvent(new ProductAddedToCart(product.Sku, quantity));
+            RaiseEvent(new ProductAddedToCart(product.Id, quantity));
         }
         public void RemoveFromCart(Product product, int quantity)
         {
@@ -35,13 +35,13 @@ namespace CartExample.Domain.Cart
             if (quantity > -1)
                 throw new InvalidOperationException("quantity must be negative");
 
-            if(!this.products.ContainsKey(product.Sku))
+            if(!this.products.ContainsKey(product.Id))
                 throw new InvalidOperationException("can't remove from cart, product not in cart");
 
-            if (this.products[product.Sku] - quantity < 0)
+            if (this.products[product.Id] - quantity < 0)
                 throw new InvalidOperationException("cant remove more than is in cart");            
 
-            RaiseEvent(new ProductRemovedFromCart(product.Sku, quantity));
+            RaiseEvent(new ProductRemovedFromCart(product.Id, quantity));
         }
 
         void AssertCanModifyCart()
@@ -52,7 +52,7 @@ namespace CartExample.Domain.Cart
 
         public void Checkout()
         {
-            RaiseEvent(new CartCheckedOut());
+            RaiseEvent(new CartCheckedOut(this.Id));
         }
 
         private void Apply(ProductAddedToCart e)
@@ -64,12 +64,12 @@ namespace CartExample.Domain.Cart
 
         private void Apply(ProductRemovedFromCart e)
         {
-            int count = this.products[e.Sku];
+            int count = this.products[e.Id];
 
             if (count + e.Quantity == 0)
-                this.products.Remove(e.Sku);
+                this.products.Remove(e.Id);
             else
-                this.products[e.Sku] += e.Quantity;
+                this.products[e.Id] += e.Quantity;
         }
 
         private void Apply(CartCheckedOut e)

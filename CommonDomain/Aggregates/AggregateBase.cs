@@ -10,13 +10,14 @@ namespace CommonDomain.Aggregates
 
         private IRouteEvents registeredRoutes;
 
-        protected AggregateBase()
-            : this(null)
+        protected AggregateBase(Guid id)
+            : this(id, null)
         {
         }
 
-        protected AggregateBase(IRouteEvents handler)
+        protected AggregateBase(Guid id, IRouteEvents handler)
         {
+            this.Id = id;
             if (handler == null) return;
 
             this.RegisteredRoutes = handler;

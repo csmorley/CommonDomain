@@ -8,11 +8,13 @@ namespace CartExample.Domain.Carts
 {
     public class CartCheckedOut
     {
-        public CartCheckedOut()
+        public CartCheckedOut(Guid id)
         {
+            this.CartId = id;
             this.CheckedOutOn = DateTime.UtcNow;
         }
 
         public readonly DateTime CheckedOutOn;
+        public readonly Guid CartId;
     }
 }

@@ -36,7 +36,7 @@ namespace CommonDomain.Messaging
 
         private readonly IAggregate owner;
 
-        public Guid AggregateId { get { return this.owner.Id; } }
+        //public string AggregateId { get { return this.owner.Id; } }
         public readonly object EventObject;
         public readonly string EventName;
         public readonly Version EventVersion;
