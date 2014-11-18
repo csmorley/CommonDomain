@@ -10,7 +10,7 @@ using CommonDomain.Aggregates;
 
 namespace CartExample.Projections
 {
-    public class AbandonedItems : IEventHandler<ProductAddedToCart>, IEventHandler<ProductRemovedFromCart>, IEventHandler<CartCheckedOut>
+    public class AbandonedItems : IEventHandler<ProductAddedToCart>, IEventHandler<CartCheckedOut>
     {
         Database database;
 
@@ -21,15 +21,31 @@ namespace CartExample.Projections
 
         public void Handle(Identity senderId, ProductAddedToCart eventToHandle, bool isReplay)
         {
+            // create the list if it doesnt exist
+            if(this.database.AddedItems.ContainsKey(senderId)==false)
+            {
+                this.database.AddedItems.Add(senderId, new HashSet<string>());
+            }
 
+            var hashset = this.database.AddedItems[senderId];
+
+            // check if already stored as added item
+            if (hashset.Contains(eventToHandle.ProductId))
+                return;
+
+            hashset.Add(eventToHandle.ProductId);
         }
 
-        public void Handle(Identity senderId, ProductRemovedFromCart eventToHandle, bool isReplay)
-        {
-
-        }
         public void Handle(Identity senderId, CartCheckedOut eventToHandle, bool isReplay)
         {
+            var hashset = this.database.AddedItems[senderId];
+
+            foreach(var id in eventToHandle.Products.Keys)
+            {
+                hashset.Remove(id);
+            }
+
+            this.database.AbandonedItems.Add(senderId, new HashSet<string>(hashset));
         }
     }
 }

@@ -28,7 +28,7 @@ namespace ForUs.Common.Domain.Repositories
         }
 
         public GetEventStoreRepository(IEventStoreConnection eventStoreConnection)
-            : this(eventStoreConnection, (t, g) => string.Format("{0}-{1}", char.ToLower(t.Name[0]) + t.Name.Substring(1), g.Id))
+            : this(eventStoreConnection, (t, g) => string.Format("{0}-{1}", char.ToLower(t.Name[0]) + t.Name.Substring(1), g.IdentityValue))
         {
         }
 

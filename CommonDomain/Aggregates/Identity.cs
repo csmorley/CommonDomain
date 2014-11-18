@@ -10,32 +10,32 @@ namespace CommonDomain.Aggregates
     {
         public Identity()
         {
-            this.id = Guid.NewGuid().ToString();
+            this.identityValue = Guid.NewGuid().ToString();
         }
 
-        public Identity(string id)
+        public Identity(string value)
         {
-            this.id = id;
+            this.identityValue = value;
             this.isConstructedWithGuid = false;
         }
 
         public Identity(Guid id)
         {
-            this.id = id.ToString();
+            this.identityValue = id.ToString();
             this.isConstructedWithGuid = true;
         }
 
         protected readonly bool isConstructedWithGuid;
-        protected readonly string id;
+        protected readonly string identityValue;
         public bool IsConvertableToGuid { get { return this.isConstructedWithGuid; } }
 
-        public string Id { get { return this.id; } }
+        public string IdentityValue { get { return this.identityValue; } }
 
         public bool Equals(Identity id)
         {
             if (object.ReferenceEquals(this, id)) return true;
             if (object.ReferenceEquals(null, id)) return false;
-            return this.id.Equals(id.id);
+            return this.identityValue.Equals(id.identityValue);
         }
 
         public override bool Equals(object anotherObject)
@@ -45,23 +45,28 @@ namespace CommonDomain.Aggregates
 
         public override int GetHashCode()
         {
-            return (this.GetType().GetHashCode() * 907) + this.id.GetHashCode();
+            return (this.GetType().GetHashCode() * 907) + this.identityValue.GetHashCode();
         }
 
         public override string ToString()
         {
-            return this.GetType().Name + " [Id=" + this.id + "]";
+            return this.GetType().Name + " [Id=" + this.identityValue + "]";
         }
-    }
 
-    public static class IdentityHelper
-    {
-        public static Guid AsGuid(this Identity input)
+        public static implicit operator Guid(Identity identity)  // implicit digit to byte conversion operator
         {
-            if (input.IsConvertableToGuid == false)
-                throw new InvalidCastException("not possible to express as GUID");
+            if (identity.IsConvertableToGuid == false)
+                throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as GUID");
 
-            return new Guid(input.Id);
+            return new Guid(identity.IdentityValue);
+        }
+
+        public static implicit operator string(Identity identity)  // implicit digit to byte conversion operator
+        {
+            if (identity.IsConvertableToGuid == true)
+                throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as string");
+
+            return identity.IdentityValue;
         }
     }
 }

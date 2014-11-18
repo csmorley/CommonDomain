@@ -53,8 +53,7 @@ namespace CartExample.Domain.Cart
 
         public void Checkout()
         {
-            // FIX THIS!!
-            RaiseEvent(new CartCheckedOut());
+            RaiseEvent(new CartCheckedOut(this.products));
         }
 
         private void Apply(ProductAddedToCart e)
