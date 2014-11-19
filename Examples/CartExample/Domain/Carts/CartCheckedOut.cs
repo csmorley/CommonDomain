@@ -16,6 +16,13 @@ namespace CartExample.Domain.Carts
             this.Products = new Dictionary<ProductId, int>(products); // make a copy of the data
         }
 
+        // for testing, to allow injection of date
+        public CartCheckedOut(Dictionary<ProductId, int> products, DateTime on)
+        {
+            this.CheckedOutOn = on;
+            this.Products = new Dictionary<ProductId, int>(products); // make a copy of the data
+        }
+
         public readonly Dictionary<ProductId, int> Products;
         public readonly DateTime CheckedOutOn;
     }

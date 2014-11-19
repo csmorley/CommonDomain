@@ -8,6 +8,11 @@ namespace CommonDomain.Aggregates
 {
     public abstract class Identity : IEquatable<Identity>, IIdentity
     {
+        protected readonly bool isConstructedWithGuid;
+        protected readonly string identityValue;
+        public bool IsConvertableToGuid { get { return this.isConstructedWithGuid; } }
+        public string IdentityValue { get { return this.identityValue; } }
+
         public Identity()
         {
             this.identityValue = Guid.NewGuid().ToString();
@@ -24,12 +29,6 @@ namespace CommonDomain.Aggregates
             this.identityValue = id.ToString();
             this.isConstructedWithGuid = true;
         }
-
-        protected readonly bool isConstructedWithGuid;
-        protected readonly string identityValue;
-        public bool IsConvertableToGuid { get { return this.isConstructedWithGuid; } }
-
-        public string IdentityValue { get { return this.identityValue; } }
 
         public bool Equals(Identity id)
         {
@@ -53,7 +52,7 @@ namespace CommonDomain.Aggregates
             return this.GetType().Name + " [Id=" + this.identityValue + "]";
         }
 
-        public static implicit operator Guid(Identity identity)  // implicit digit to byte conversion operator
+        public static implicit operator Guid(Identity identity)
         {
             if (identity.IsConvertableToGuid == false)
                 throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as GUID");
@@ -61,7 +60,7 @@ namespace CommonDomain.Aggregates
             return new Guid(identity.IdentityValue);
         }
 
-        public static implicit operator string(Identity identity)  // implicit digit to byte conversion operator
+        public static implicit operator string(Identity identity)
         {
             if (identity.IsConvertableToGuid == true)
                 throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as string");
