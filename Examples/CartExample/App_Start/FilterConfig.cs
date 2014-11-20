@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace CartExample
+namespace CartExample.Web
 {
     public class FilterConfig
     {

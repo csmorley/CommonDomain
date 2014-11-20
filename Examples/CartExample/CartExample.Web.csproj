@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CartExample</RootNamespace>
-    <AssemblyName>CartExample</AssemblyName>
+    <RootNamespace>CartExample.Web</RootNamespace>
+    <AssemblyName>CartExample.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -131,25 +131,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CheckoutsReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Domain\Carts\Cart.cs" />
-    <Compile Include="Domain\Carts\CartCheckedOut.cs" />
-    <Compile Include="Domain\Carts\CartCreated.cs" />
-    <Compile Include="Domain\Carts\CartId.cs" />
-    <Compile Include="Domain\Carts\ProductRemovedFromCart.cs" />
-    <Compile Include="Domain\Carts\ProductAddedToCart.cs" />
-    <Compile Include="Domain\Products\Product.cs" />
-    <Compile Include="Domain\Products\ProductId.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Database.cs" />
-    <Compile Include="Infrastructure\DispatchEvents.cs" />
-    <Compile Include="Infrastructure\EventStoreConnectionManager.cs" />
-    <Compile Include="Infrastructure\RandomProvider.cs" />
-    <Compile Include="Infrastructure\Wiring.cs" />
-    <Compile Include="Mock\TestData.cs" />
-    <Compile Include="Projections\CheckoutStatisticsProjection.cs" />
-    <Compile Include="Projections\AverageCheckoutTimeProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -193,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Domain\Checkout\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +187,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CartExample.Domain\CartExample.csproj">
+      <Project>{efc01e5a-5eba-4bfe-b874-c338e1a4b0de}</Project>
+      <Name>CartExample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CommonDomain.Implementation\CommonDomain.Implementation.csproj">
       <Project>{b836619d-772d-4194-a702-85f5dfc9588b}</Project>
       <Name>CommonDomain.Implementation</Name>

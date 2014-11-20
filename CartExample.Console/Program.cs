@@ -1,6 +1,5 @@
 ﻿using CartExample.Domain.Carts;
 using CartExample.Domain.Products;
-using CartExample.Projections;
 using CartExample.Infrastructure;
 using CartExample.Mock;
 using CommonDomain.Aggregates;
@@ -11,25 +10,17 @@ using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CartExample.Web
+namespace CartExample.Console
 {
-    public class MvcApplication : System.Web.HttpApplication
+    class Program
     {
-        protected void Application_Start()
+        static void Main(string[] args)
         {
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
             var container = new Container();
             Wiring.WireUp(container);
-            DependencyResolver.SetResolver(new SimpleInjector.Integration.Web.Mvc.SimpleInjectorDependencyResolver(container));
 
             var product1 = new Product(new ProductId("11-11-1111"), "Book 1");
             var product2 = new Product(new ProductId("22-22-2222"), "Book 2");
@@ -69,7 +60,7 @@ namespace CartExample.Web
 
             int count = 0;
             var start = DateTime.UtcNow;
-            foreach(var cart in testData)
+            foreach (var cart in testData)
             {
                 count = count + (cart as IAggregate).GetUncommittedEvents().Count;
                 repository.Save(cart);
@@ -78,29 +69,6 @@ namespace CartExample.Web
             }
             var duration = DateTime.UtcNow - start;
             var eventsPerSecond = (double)count / duration.TotalSeconds;
-
-            // now view the read model for projected streams
-            var database = container.GetInstance<Database>();
-
-            var moreThanOneItemAbandoned = database.CartsWithAbandonedItems.Where(x => x.Value.Count > 1);
-
-
-            /*var aggregate = cart as IAggregate;
-            var events = aggregate.GetUncommittedEvents();
-            foreach(var e in events)
-            {
-                var envelope = new EventEnvelope(aggregate, e);
-                mediator.PublishEvent(envelope, false);
-            }*/
-
-            /*container.RegisterAll<IEventHandler<NewUserAddedEvent>>(
-                typeof(UpdateNewUserDashboard),
-                typeof(SendNewUserEmail)
-                );
-
-            container.Register<ICommandHandler<NewUserCommand>, NewUserCommandHandler>();
-
-            container.Register<IQueryHandler<GetUsernameQuery, string>, GetUsernameQueryHandler>();*/
         }
     }
 }

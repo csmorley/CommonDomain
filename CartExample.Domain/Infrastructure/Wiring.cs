@@ -1,13 +1,14 @@
 ﻿using CommonDomain.Mediator;
 using CommonDomain.Persistence;
 using EventStore.ClientAPI;
-using ForUs.Common.Domain.Repositories;
+using CommonDomain.Repositories;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CartExample.Projections;
 
 namespace CartExample.Infrastructure
 {
@@ -26,7 +27,7 @@ namespace CartExample.Infrastructure
                 AppDomain.CurrentDomain.GetAssemblies()
             );
 
-            container.Register<IQueryHandler<NameTestQuery, int>, TestQueryHandler>();
+            // container.Register<IQueryHandler<NameTestQuery, int>, TestQueryHandler>();
 
             container.Verify();
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using CommonDomain.Mediator;
 using CartExample.Domain.Carts;
-using CartExample.Infrastructure;
 using CartExample.Domain;
 using CommonDomain.Aggregates;
 

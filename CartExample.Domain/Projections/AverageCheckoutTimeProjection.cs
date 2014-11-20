@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using CommonDomain.Mediator;
 using CartExample.Domain.Carts;
-using CartExample.Infrastructure;
 using CommonDomain.Aggregates;
 
 namespace CartExample.Projections

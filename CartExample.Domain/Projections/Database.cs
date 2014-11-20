@@ -1,10 +1,10 @@
-﻿using CartExample.Projections;
+﻿using CartExample.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CartExample.Infrastructure
+namespace CartExample.Projections
 {
     public class Database
     {

@@ -8,9 +8,8 @@ using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ForUs.Common.Domain.Repositories
+namespace CommonDomain.Repositories
 {
-
     public class StreamNamingConvention : IStreamNamingConvention
     {
         public string GetStreamName(Type type, IIdentity identity)
@@ -120,7 +119,7 @@ namespace ForUs.Common.Domain.Repositories
 
             if (eventsToSave.Count < WritePageSize)
             {
-                this.connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait(); ;
+                this.connection.AppendToStreamAsync(streamName, expectedVersion, eventsToSave).Wait();
             }
             else
             {
@@ -160,5 +159,21 @@ namespace ForUs.Common.Domain.Repositories
             return new EventData(eventId, typeName, true, data, metadata);
         }
     }
+}
+
+
+
+
+public class StreamNamingConvention : IStreamNamingConvention
+{
+    public string GetStreamName(Type type, IIdentity identity)
+    {
+        return string.Format("{0}-{1}", char.ToLower(type.Name[0]) + type.Name.Substring(1), identity.IdentityValue);
+    }
+}
+
+public interface IStreamNamingConvention
+{
+    string GetStreamName(Type type, IIdentity identity);
 }
 
