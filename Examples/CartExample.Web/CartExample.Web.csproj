@@ -197,7 +197,7 @@
       <Project>{c889ab81-f351-44bc-a26e-a139f6dfbc11}</Project>
       <Name>CommonDomain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CartExample.Domain\CartExample.csproj">
+    <ProjectReference Include="..\CartExample\CartExample.csproj">
       <Project>{efc01e5a-5eba-4bfe-b874-c338e1a4b0de}</Project>
       <Name>CartExample</Name>
     </ProjectReference>
