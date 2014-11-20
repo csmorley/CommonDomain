@@ -75,6 +75,7 @@
     <Compile Include="Mediator\Mediator.cs" />
     <Compile Include="Mediator\Result.cs" />
     <Compile Include="Messaging\EventInfo.cs" />
+    <Compile Include="Messaging\EventPublisher.cs" />
     <Compile Include="Messaging\EventReceiver.cs" />
     <Compile Include="Messaging\IExternalEventConverter.cs" />
     <Compile Include="Messaging\SubscriptionDropReason.cs" />

@@ -41,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EventStore.ClientAPI, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EventStore.Client.3.0.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="SimpleInjector">
       <HintPath>..\..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.dll</HintPath>
@@ -140,6 +144,7 @@
     </Compile>
     <Compile Include="Infrastructure\Database.cs" />
     <Compile Include="Infrastructure\DispatchEvents.cs" />
+    <Compile Include="Infrastructure\EventStoreConnectionManager.cs" />
     <Compile Include="Infrastructure\RandomProvider.cs" />
     <Compile Include="Infrastructure\Wiring.cs" />
     <Compile Include="Mock\TestData.cs" />

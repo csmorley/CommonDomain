@@ -10,6 +10,20 @@ using Newtonsoft.Json.Linq;
 
 namespace ForUs.Common.Domain.Repositories
 {
+
+    public class StreamNamingConvention : IStreamNamingConvention
+    {
+        public string GetStreamName(Type type, IIdentity identity)
+        {
+            return string.Format("{0}-{1}", char.ToLower(type.Name[0]) + type.Name.Substring(1), identity.IdentityValue);
+        }
+    }
+
+    public interface IStreamNamingConvention
+    {
+        string GetStreamName(Type type, IIdentity identity);
+    }
+
     public class GetEventStoreRepository : IRepository
     {
         private const string EventClrTypeHeader = "EventClrTypeName";
@@ -18,24 +32,16 @@ namespace ForUs.Common.Domain.Repositories
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
 
-        private readonly Func<Type, IIdentity, string> streamNamingConvention;
+        IStreamNamingConvention streamNamingConvention;
 
         private readonly IEventStoreConnection connection;
         private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };
 
-        static GetEventStoreRepository()
-        {
-        }
 
-        public GetEventStoreRepository(IEventStoreConnection eventStoreConnection)
-            : this(eventStoreConnection, (t, g) => string.Format("{0}-{1}", char.ToLower(t.Name[0]) + t.Name.Substring(1), g.IdentityValue))
-        {
-        }
-
-        public GetEventStoreRepository(IEventStoreConnection eventStoreConnection, Func<Type, IIdentity, string> aggregateIdToStreamNameConvention)
+        public GetEventStoreRepository(IEventStoreConnection eventStoreConnection, IStreamNamingConvention namingConvention)
         {
             this.connection = eventStoreConnection;
-            this.streamNamingConvention = aggregateIdToStreamNameConvention;
+            this.streamNamingConvention = namingConvention;
         }
 
         public TAggregate GetById<TAggregate>(IIdentity id) where TAggregate : class, IAggregate
@@ -48,7 +54,7 @@ namespace ForUs.Common.Domain.Repositories
             if (version <= 0)
                 throw new InvalidOperationException("Cannot get version <= 0");
 
-            var streamName = this.streamNamingConvention(typeof(TAggregate), id);
+            var streamName = this.streamNamingConvention.GetStreamName(typeof(TAggregate), id);
             var aggregate = ConstructAggregate<TAggregate>();
 
             var sliceStart = 0;
@@ -106,7 +112,7 @@ namespace ForUs.Common.Domain.Repositories
             };
             updateHeaders(commitHeaders);
 
-            var streamName = this.streamNamingConvention(aggregate.GetType(), aggregate.Identity);
+            var streamName = this.streamNamingConvention.GetStreamName(aggregate.GetType(), aggregate.Identity);
             var newEvents = aggregate.GetUncommittedEvents().Cast<object>().ToList();
             var originalVersion = aggregate.Version - newEvents.Count;
             var expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;

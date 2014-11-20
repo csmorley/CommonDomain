@@ -1,8 +1,10 @@
-﻿using CartExample.Domain.Products;
+﻿using CartExample.Domain.Carts;
+using CartExample.Domain.Products;
 using CartExample.Infrastructure;
 using CartExample.Mock;
 using CommonDomain.Implementation;
 using CommonDomain.Mediator;
+using CommonDomain.Persistence;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
@@ -37,21 +39,25 @@ namespace CartExample
             var product8 = new Product(new ProductId("88-88-8888"), "Book 8");
             var products = new List<Product>(new[] { product1, product2, product3, product4, product5, product6, product7, product8 });
 
-            /*var cart = new Cart(new CartId(Guid.NewGuid()));            
-            cart.AddToCart(product1, 1);
-            cart.AddToCart(product1, 1);
-            cart.RemoveFromCart(product1, -1);
-            cart.AddToCart(product1, 10);
+            var now = DateTime.UtcNow;
+            var exampleCart = new Cart(new CartId(Guid.NewGuid()), now, now);
+            exampleCart.AddToCart(product1, 1);
+            exampleCart.AddToCart(product1, 1);
+            exampleCart.RemoveFromCart(product1, -1);
+            exampleCart.AddToCart(product1, 10);
 
-            cart.AddToCart(product2, 10);
-            cart.RemoveFromCart(product2, -10);
+            exampleCart.AddToCart(product2, 10);
+            exampleCart.RemoveFromCart(product2, -10);
 
-            cart.AddToCart(product3, 5);
+            exampleCart.AddToCart(product3, 5);
 
-            cart.AddToCart(product4, 3);
-            cart.RemoveFromCart(product4, -2);
-            
-            cart.Checkout();*/
+            exampleCart.AddToCart(product4, 3);
+            exampleCart.RemoveFromCart(product4, -2);
+
+            exampleCart.Checkout();
+
+            var repository = container.GetInstance<IRepository>();
+            repository.Save(exampleCart);
 
             var testData = new TestData(products).Create();
 
@@ -59,14 +65,19 @@ namespace CartExample
 
             //mediator.RequestQuery(new NameTestQuery() { Name = "Chris" });
 
-             ulong count = 0;
-             var start = DateTime.UtcNow;
-             foreach(var cart in testData)
-             {
-                 var result = DispatchEvents.Dispatch(cart, mediator);
-                 count =+ count;
-             }
-             var duration = DateTime.UtcNow - start;
+            ulong count = 0;
+            var start = DateTime.UtcNow;
+            foreach(var cart in testData)
+            {
+                var result = DispatchEvents.Dispatch(cart, mediator);
+                count =+ count;
+            }
+            var duration = DateTime.UtcNow - start;
+
+
+            
+            
+
 
             // now view the read model for projected streams
             var database = container.GetInstance<Database>();

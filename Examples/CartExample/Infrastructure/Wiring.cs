@@ -1,4 +1,7 @@
 ﻿using CommonDomain.Mediator;
+using CommonDomain.Persistence;
+using EventStore.ClientAPI;
+using ForUs.Common.Domain.Repositories;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 using System;
@@ -13,6 +16,9 @@ namespace CartExample.Infrastructure
         public static void WireUp(Container container)
         {
             container.RegisterSingle<Database>();
+            container.RegisterSingle<IRepository, GetEventStoreRepository>();
+            container.RegisterSingle<IStreamNamingConvention, StreamNamingConvention>();
+            container.RegisterSingle<IEventStoreConnection>( () => { return EventStoreConnectionManager.Init(); } );
 
             container.RegisterManyForOpenGeneric(typeof(IEventHandler<>),
                 AccessibilityOption.AllTypes,
