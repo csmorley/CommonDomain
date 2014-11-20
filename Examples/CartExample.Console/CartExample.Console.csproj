@@ -35,18 +35,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EventStore.ClientAPI">
-      <HintPath>..\packages\EventStore.Client.3.0.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
+      <HintPath>..\..\packages\EventStore.Client.3.0.1\lib\net40\EventStore.ClientAPI.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=2.6.1.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector.Diagnostics">
-      <HintPath>..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
+      <HintPath>..\..\packages\SimpleInjector.2.6.1\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,11 +68,11 @@
       <Project>{efc01e5a-5eba-4bfe-b874-c338e1a4b0de}</Project>
       <Name>CartExample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonDomain.Implementation\CommonDomain.Implementation.csproj">
+    <ProjectReference Include="..\..\CommonDomain.Implementation\CommonDomain.Implementation.csproj">
       <Project>{b836619d-772d-4194-a702-85f5dfc9588b}</Project>
       <Name>CommonDomain.Implementation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonDomain\CommonDomain.csproj">
+    <ProjectReference Include="..\..\CommonDomain\CommonDomain.csproj">
       <Project>{c889ab81-f351-44bc-a26e-a139f6dfbc11}</Project>
       <Name>CommonDomain</Name>
     </ProjectReference>

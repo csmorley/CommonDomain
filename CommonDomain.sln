@@ -12,15 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5311EA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonDomain", "CommonDomain\CommonDomain.csproj", "{C889AB81-F351-44BC-A26E-A139F6DFBC11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample.Web", "Examples\CartExample\CartExample.Web.csproj", "{5EE877AA-72CA-4529-80C9-2768BEE8C550}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{FBE1A5A8-CB5B-4C0F-8110-47E6B4D3BB16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonDomain.Implementation", "CommonDomain.Implementation\CommonDomain.Implementation.csproj", "{B836619D-772D-4194-A702-85F5DFC9588B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample.Console", "CartExample.Console\CartExample.Console.csproj", "{8D976390-A53C-479A-BB14-D85F722344F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample.Console", "Examples\CartExample.Console\CartExample.Console.csproj", "{8D976390-A53C-479A-BB14-D85F722344F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample", "CartExample.Domain\CartExample.csproj", "{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample", "Examples\CartExample.Domain\CartExample.csproj", "{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartExample.Web", "Examples\CartExample.Web\CartExample.Web.csproj", "{5EE877AA-72CA-4529-80C9-2768BEE8C550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +32,6 @@ Global
 		{C889AB81-F351-44BC-A26E-A139F6DFBC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C889AB81-F351-44BC-A26E-A139F6DFBC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C889AB81-F351-44BC-A26E-A139F6DFBC11}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B836619D-772D-4194-A702-85F5DFC9588B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B836619D-772D-4194-A702-85F5DFC9588B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B836619D-772D-4194-A702-85F5DFC9588B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,13 +44,17 @@ Global
 		{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE877AA-72CA-4529-80C9-2768BEE8C550}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5EE877AA-72CA-4529-80C9-2768BEE8C550} = {FBE1A5A8-CB5B-4C0F-8110-47E6B4D3BB16}
 		{8D976390-A53C-479A-BB14-D85F722344F5} = {FBE1A5A8-CB5B-4C0F-8110-47E6B4D3BB16}
 		{EFC01E5A-5EBA-4BFE-B874-C338E1A4B0DE} = {FBE1A5A8-CB5B-4C0F-8110-47E6B4D3BB16}
+		{5EE877AA-72CA-4529-80C9-2768BEE8C550} = {FBE1A5A8-CB5B-4C0F-8110-47E6B4D3BB16}
 	EndGlobalSection
 EndGlobal
