@@ -18,7 +18,7 @@ namespace ForUs.Common.Domain.Repositories
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
 
-        private readonly Func<Type, IIdentity, string> BuildStreamNameFromId;
+        private readonly Func<Type, IIdentity, string> streamNamingConvention;
 
         private readonly IEventStoreConnection connection;
         private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None };
@@ -35,7 +35,7 @@ namespace ForUs.Common.Domain.Repositories
         public GetEventStoreRepository(IEventStoreConnection eventStoreConnection, Func<Type, IIdentity, string> aggregateIdToStreamNameConvention)
         {
             this.connection = eventStoreConnection;
-            this.BuildStreamNameFromId = aggregateIdToStreamNameConvention;
+            this.streamNamingConvention = aggregateIdToStreamNameConvention;
         }
 
         public TAggregate GetById<TAggregate>(IIdentity id) where TAggregate : class, IAggregate
@@ -48,7 +48,7 @@ namespace ForUs.Common.Domain.Repositories
             if (version <= 0)
                 throw new InvalidOperationException("Cannot get version <= 0");
 
-            var streamName = this.BuildStreamNameFromId(typeof(TAggregate), id);
+            var streamName = this.streamNamingConvention(typeof(TAggregate), id);
             var aggregate = ConstructAggregate<TAggregate>();
 
             var sliceStart = 0;
@@ -106,7 +106,7 @@ namespace ForUs.Common.Domain.Repositories
             };
             updateHeaders(commitHeaders);
 
-            var streamName = this.BuildStreamNameFromId(aggregate.GetType(), aggregate.Identity);
+            var streamName = this.streamNamingConvention(aggregate.GetType(), aggregate.Identity);
             var newEvents = aggregate.GetUncommittedEvents().Cast<object>().ToList();
             var originalVersion = aggregate.Version - newEvents.Count;
             var expectedVersion = originalVersion == 0 ? ExpectedVersion.NoStream : originalVersion - 1;

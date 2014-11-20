@@ -143,8 +143,8 @@
     <Compile Include="Infrastructure\RandomProvider.cs" />
     <Compile Include="Infrastructure\Wiring.cs" />
     <Compile Include="Mock\TestData.cs" />
-    <Compile Include="Projections\CheckoutStatistics.cs" />
-    <Compile Include="Projections\AverageCheckoutTime.cs" />
+    <Compile Include="Projections\CheckoutStatisticsProjection.cs" />
+    <Compile Include="Projections\AverageCheckoutTimeProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -61,6 +61,30 @@ namespace CommonDomain.Mediator
             return response;
         }
 
+        /*
+        readonly Dictionary<Tuple<Type,Type>, MethodInfo> knownHandlerMethods = new Dictionary<Tuple<Type,Type>, MethodInfo>();
+
+        MethodInfo GetEventHandlerMethodInfo(Type handlerType, Type eventType)
+        {
+            MethodInfo method;
+            var key = new Tuple<Type,Type>(handlerType,eventType);
+
+            if(this.knownHandlerMethods.TryGetValue(key, out method) == false)
+            {
+                method = handlerType.GetMethod(
+                    "Handle",
+                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod,
+                    null,
+                    CallingConventions.HasThis,
+                    new[] { typeof(Identity), eventType, typeof(bool) },
+                    null);
+
+                this.knownHandlerMethods.Add(key, method);
+            }
+
+            return method;                
+        }*/
+
 
         public Result PublishEvent(EventEnvelope envelope, bool isReplay)
         {
@@ -81,6 +105,8 @@ namespace CommonDomain.Mediator
                         CallingConventions.HasThis,
                         new[] { typeof(Identity), envelope.EventObject.GetType(), typeof(bool) },
                         null);
+
+                    //var method = GetEventHandlerMethodInfo(handler.GetType(), envelope.EventObject.GetType());
 
                     method.Invoke(handler, new[] { envelope.AggregateId, envelope.EventObject, isReplay });
                 }

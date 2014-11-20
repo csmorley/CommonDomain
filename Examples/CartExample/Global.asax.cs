@@ -60,13 +60,13 @@ namespace CartExample
             //mediator.RequestQuery(new NameTestQuery() { Name = "Chris" });
 
              ulong count = 0;
-             var duration = new TimeSpan();
+             var start = DateTime.UtcNow;
              foreach(var cart in testData)
              {
                  var result = DispatchEvents.Dispatch(cart, mediator);
-                 count += result.Item1;
-                 duration += result.Item2;
+                 count =+ count;
              }
+             var duration = DateTime.UtcNow - start;
 
             // now view the read model for projected streams
             var database = container.GetInstance<Database>();

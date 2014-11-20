@@ -10,11 +10,23 @@ using CommonDomain.Aggregates;
 
 namespace CartExample.Projections
 {
-    public class CheckoutStatistics : IEventHandler<ProductAddedToCart>, IEventHandler<CartCheckedOut>
+    public class DayCheckoutStatistic
+    {
+        public DayCheckoutStatistic(DateTime day)
+        {
+            this.Day = day;
+        }
+        public ulong TotalCarts;
+        public ulong CartsThatHadAnAbandonedItem;
+        public readonly DateTime Day;
+        public double PercentageWithAbandonedItems { get {  return (double)this.CartsThatHadAnAbandonedItem / (double)this.TotalCarts * 100; } }
+    }
+
+    public class CheckoutStatisticsProjection : IEventHandler<ProductAddedToCart>, IEventHandler<CartCheckedOut>
     {
         Database database;
 
-        public CheckoutStatistics(Database database)
+        public CheckoutStatisticsProjection(Database database)
         {
             this.database = database;
         }
@@ -53,20 +65,21 @@ namespace CartExample.Projections
             if (abandonedItemsInCartCount > 0) // we have abandoned items that we need to report
             {
                 this.database.CartsWithAbandonedItems.Add(senderId, new HashSet<string>(hashset));
-                this.database.CartsWithAbandonedItemsCount++;
-                this.database.PercentageOfCartsWithAbandonedItems = (double)this.database.CartsWithAbandonedItemsCount / (double)this.database.CheckedOutCount * 100;
+                var cartsWithAbandonedItemsCount = this.database.CartsWithAbandonedItems.Count();
+                this.database.PercentageOfCartsWithAbandonedItems = (double)cartsWithAbandonedItemsCount / (double)this.database.CheckedOutCount * 100;
             }
 
-            Tuple<ulong, ulong> checkoutsForDate;
+            DayCheckoutStatistic checkoutsForDate;
             if (this.database.CheckoutsByDate.TryGetValue(checkedOutOn, out checkoutsForDate) == false)
             {
-                checkoutsForDate = new Tuple<ulong, ulong>(0, 0);
+                checkoutsForDate = new DayCheckoutStatistic(checkedOutOn) { CartsThatHadAnAbandonedItem = 0, TotalCarts = 0 };
                 this.database.CheckoutsByDate.Add(checkedOutOn, checkoutsForDate);
             }
 
-            var newCheckoutsCount = checkoutsForDate.Item1 + 1;
-            var newAbandonedCount = abandonedItemsInCartCount > 0 ? checkoutsForDate.Item2 + abandonedItemsInCartCount : checkoutsForDate.Item2;
-            this.database.CheckoutsByDate[checkedOutOn] = new Tuple<ulong, ulong>(newCheckoutsCount, newAbandonedCount); ;
+            this.database.CheckoutsByDate[checkedOutOn].TotalCarts++;
+
+            if (abandonedItemsInCartCount > 0) 
+                this.database.CheckoutsByDate[checkedOutOn].CartsThatHadAnAbandonedItem++;
 
             this.database.AddedItems.Remove(senderId); // clear out the temp AddedItems table
         }

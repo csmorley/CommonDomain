@@ -58,7 +58,11 @@ namespace CartExample.Mock
 
         Cart CreateRandomCart(DateTime date)
         {
-            var cart = new Cart(new CartId(Guid.NewGuid()), date, date);
+            // create fake start and end times
+            var start = date.AddHours(RandomProvider.Next(6, 23));
+            var end = start.AddSeconds(RandomProvider.Next(180, 900));
+            var cart = new Cart(new CartId(Guid.NewGuid()), start, end);
+
             int steps = RandomProvider.Next(1,10);
 
             while (cart.CountUniqueProducts() == 0) // loop till we create a valid cart

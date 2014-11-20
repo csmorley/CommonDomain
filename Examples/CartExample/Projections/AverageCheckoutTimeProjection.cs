@@ -9,9 +9,9 @@ using CommonDomain.Aggregates;
 
 namespace CartExample.Projections
 {
-    public class AverageCheckoutTime : IEventHandler<CartCreated>, IEventHandler<CartCheckedOut>
+    public class AverageCheckoutTimeProjection : IEventHandler<CartCreated>, IEventHandler<CartCheckedOut>
     {
-        public AverageCheckoutTime(Database database)
+        public AverageCheckoutTimeProjection(Database database)
         {
             this.database = database;
         }
@@ -38,7 +38,7 @@ namespace CartExample.Projections
                 
                 foreach(var span in this.database.CheckoutDurations.Values)
                 {
-                    total += span;
+                    total = total + span;
                 }
 
                 this.database.AverageCheckoutTime = total / count;
