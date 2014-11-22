@@ -7,7 +7,7 @@ using CommonDomain.Messaging;
 
 namespace CartExample.Domain
 {
-    public class ProductAddedToCart
+    public class ProductAddedToCart : IEvent
     {
         public ProductAddedToCart(ProductId productId, int quantity)
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using CommonDomain.Mediator;
+using CommonDomain.Messaging;
 using CartExample.Domain.Carts;
 using CommonDomain.Aggregates;
 

@@ -4,7 +4,6 @@ using CartExample.Infrastructure;
 using CartExample.Mock;
 using CommonDomain.Aggregates;
 using CommonDomain.Implementation;
-using CommonDomain.Mediator;
 using CommonDomain.Messaging;
 using SimpleInjector;
 using SimpleInjector.Extensions;

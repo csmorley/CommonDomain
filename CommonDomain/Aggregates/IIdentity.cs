@@ -8,6 +8,6 @@ namespace CommonDomain.Aggregates
 {
     public interface IIdentity
     {
-        string IdentityValue { get; }
+        string Value { get; }
     }
 }

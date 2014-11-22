@@ -19,5 +19,7 @@ namespace CartExample.Projections
         public double PercentageOfCartsWithAbandonedItems;
         public ulong CheckedOutCount;
         public readonly Dictionary<DateTime, DayCheckoutStatistic> CheckoutsByDate = new Dictionary<DateTime, DayCheckoutStatistic>();
+
+        public readonly Dictionary<DateTime, ulong> TweetsByDate = new Dictionary<DateTime, ulong>();
     }
 }

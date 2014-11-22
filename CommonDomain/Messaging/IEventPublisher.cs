@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonDomain.Messaging;
 
-namespace CommonDomain.Mediator
+namespace CommonDomain.Messaging
 {
     public interface IEventPublisher
     {

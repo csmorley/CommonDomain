@@ -1,3 +1,4 @@
+using CommonDomain.Messaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace CommonDomain.Aggregates
             this.RegisteredRoutes.Register(route);
         }
 
-        protected void RaiseEvent(object @event)
+        protected void RaiseEvent(IEvent @event)
         {
             ((IAggregate)this).ApplyEvent(@event);
             this.uncommittedEvents.Add(@event);

@@ -6,19 +6,13 @@ using CommonDomain.Messaging;
 
 namespace CartExample.Domain.Carts
 {
-    public class CartCreated
+    public class CartCreated : IEvent
     {
-        public CartCreated(CartId id)
-        {
-            this.CartId = id;
-            this.CreatedOn = DateTime.UtcNow;
-        }
-
         // for testing, to allow injection of date
-        public CartCreated(CartId id, DateTime on)
+        public CartCreated(CartId value, DateTime createdOn)
         {
-            this.CartId = id;
-            this.CreatedOn = on;
+            this.CartId = value;
+            this.CreatedOn = createdOn;
         }
 
         public readonly CartId CartId;

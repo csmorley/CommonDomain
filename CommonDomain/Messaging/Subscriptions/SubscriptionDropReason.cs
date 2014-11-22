@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommonDomain.Messaging
+namespace CommonDomain.Messaging.Subscriptions
 {
     // Summary:
     //     Represents the reason subscription drop happened

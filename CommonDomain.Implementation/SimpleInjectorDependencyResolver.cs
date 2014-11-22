@@ -18,7 +18,6 @@ namespace CommonDomain.Implementation
             where TImplementation : class, TService
         {
             this.container.Register<TService, TImplementation>();
-            ///.Register<TService, TImplementation>();
         }
         public SimpleInjectorDependencyResolver(Container container)
         {
@@ -44,6 +43,5 @@ namespace CommonDomain.Implementation
         {
             return this.container.GetAllInstances(type);
         }
-
     }
 }

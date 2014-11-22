@@ -8,21 +8,8 @@ using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CommonDomain.Repositories
+namespace CommonDomain.Implementation
 {
-    public class StreamNamingConvention : IStreamNamingConvention
-    {
-        public string GetStreamName(Type type, IIdentity identity)
-        {
-            return string.Format("{0}-{1}", char.ToLower(type.Name[0]) + type.Name.Substring(1), identity.IdentityValue);
-        }
-    }
-
-    public interface IStreamNamingConvention
-    {
-        string GetStreamName(Type type, IIdentity identity);
-    }
-
     public class GetEventStoreRepository : IRepository
     {
         private const string EventClrTypeHeader = "EventClrTypeName";
@@ -160,20 +147,3 @@ namespace CommonDomain.Repositories
         }
     }
 }
-
-
-
-
-public class StreamNamingConvention : IStreamNamingConvention
-{
-    public string GetStreamName(Type type, IIdentity identity)
-    {
-        return string.Format("{0}-{1}", char.ToLower(type.Name[0]) + type.Name.Substring(1), identity.IdentityValue);
-    }
-}
-
-public interface IStreamNamingConvention
-{
-    string GetStreamName(Type type, IIdentity identity);
-}
-

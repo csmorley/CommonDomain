@@ -62,14 +62,18 @@
     <Compile Include="Domain\Carts\ProductRemovedFromCart.cs" />
     <Compile Include="Domain\Products\Product.cs" />
     <Compile Include="Domain\Products\ProductId.cs" />
+    <Compile Include="Domain\SocialMedia\UserTweet.cs" />
     <Compile Include="Infrastructure\DispatchEvents.cs" />
-    <Compile Include="Infrastructure\EventStoreConnectionManager.cs" />
     <Compile Include="Infrastructure\RandomProvider.cs" />
     <Compile Include="Infrastructure\Wiring.cs" />
+    <Compile Include="Mock\RepositoryExample.cs" />
+    <Compile Include="Mock\ProjectionExample.cs" />
     <Compile Include="Mock\TestData.cs" />
+    <Compile Include="Mock\TweetsExample.cs" />
     <Compile Include="Projections\AverageCheckoutTimeProjection.cs" />
     <Compile Include="Projections\CheckoutStatisticsProjection.cs" />
     <Compile Include="Projections\Database.cs" />
+    <Compile Include="Projections\TweetsProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

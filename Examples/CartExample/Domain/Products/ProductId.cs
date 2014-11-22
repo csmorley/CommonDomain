@@ -8,7 +8,8 @@ namespace CartExample.Domain.Products
 {
     public class ProductId : Identity
     {
-        public ProductId(string id) : base(id)
+        public ProductId(string identityValue)
+            : base(identityValue)
         {
         }
     }

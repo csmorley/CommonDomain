@@ -2,73 +2,144 @@
 using CartExample.Domain.Products;
 using CartExample.Infrastructure;
 using CartExample.Mock;
+using CartExample.Projections;
 using CommonDomain.Aggregates;
 using CommonDomain.Implementation;
-using CommonDomain.Mediator;
+using CommonDomain.Messaging;
 using CommonDomain.Persistence;
+using EventStore.ClientAPI;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CartExample.Console
 {
     class Program
     {
+        public class StreamNamingConvention : IStreamNamingConvention
+        {
+            public string GetStreamName(Type type, IIdentity identity)
+            {
+                return string.Format("{0}-{1}", char.ToLower(type.Name[0]) + type.Name.Substring(1), identity.Value);
+            }
+        }
+
+    public class MyEntityId : MyIdentity
+    {
+        public MyEntityId(Guid identityValue)
+            : base(identityValue)
+        {
+        }
+    }
+
+    public class IncludeNonPublicMembersContractResolver : DefaultContractResolver
+    {
+        public IncludeNonPublicMembersContractResolver()
+        {
+            
+        }
+
+        override protected List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            BindingFlags flags;
+
+            if (objectType == typeof(MyIdentity))
+            {
+                flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            }
+            else
+            {
+                flags = BindingFlags.Instance | BindingFlags.Public;
+            }
+
+            MemberInfo[] fields = objectType.GetFields(flags);
+
+            return fields
+                .Concat(objectType.GetProperties(flags)
+                .Where(propInfo => propInfo.CanWrite || propInfo.CanRead))
+                .ToList();
+
+        }
+
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            return base.CreateProperties(type, MemberSerialization.Fields);
+        }   
+
+        /*protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            var properties = base.CreateProperties(type, memberSerialization);
+
+            if (type == typeof(MyIdentity))
+            {
+                var property = properties.Single(x =>
+                         x.PropertyName == "Value"
+                         && x.DeclaringType == JsonProperty. // member.DeclaringType);
+                property.Readable = true;
+            }
+
+            return properties;
+        }*/
+    }
+
+    public abstract class MyIdentity
+    {
+        protected bool convertableAsGuid;
+        protected string value;
+        public string Value
+        {
+            get { return this.value; }
+
+            protected set
+            {
+                this.value = value;
+
+                Guid guid;
+                if (Guid.TryParse(this.Value, out guid) == false)
+                    this.convertableAsGuid = false;
+            }
+        }
+
+        public MyIdentity(string value)
+        {
+            this.Value = value;
+
+            
+        }
+
+        public MyIdentity(Guid value)
+        {
+            this.Value = value.ToString();
+        }
+    }
+
+        public class MyEvent
+        {
+            public MyEvent(MyEntityId id, string name)
+            {
+                this.Id = id;
+                this.Name = name;
+            }
+
+            public readonly MyEntityId Id;
+            public readonly string Name;
+        }
+
+
         static void Main(string[] args)
         {
             var container = new Container();
             Wiring.WireUp(container);
 
-            var product1 = new Product(new ProductId("11-11-1111"), "Book 1");
-            var product2 = new Product(new ProductId("22-22-2222"), "Book 2");
-            var product3 = new Product(new ProductId("33-33-3333"), "Book 3");
-            var product4 = new Product(new ProductId("44-44-4444"), "Book 4");
-            var product5 = new Product(new ProductId("55-55-5555"), "Book 5");
-            var product6 = new Product(new ProductId("66-66-6666"), "Book 6");
-            var product7 = new Product(new ProductId("77-77-7777"), "Book 7");
-            var product8 = new Product(new ProductId("88-88-8888"), "Book 8");
-            var products = new List<Product>(new[] { product1, product2, product3, product4, product5, product6, product7, product8 });
-
-            var now = DateTime.UtcNow;
-            var exampleCart = new Cart(new CartId(Guid.NewGuid()), now, now);
-            exampleCart.AddToCart(product1, 1);
-            exampleCart.AddToCart(product1, 1);
-            exampleCart.RemoveFromCart(product1, -1);
-            exampleCart.AddToCart(product1, 10);
-
-            exampleCart.AddToCart(product2, 10);
-            exampleCart.RemoveFromCart(product2, -10);
-
-            exampleCart.AddToCart(product3, 5);
-
-            exampleCart.AddToCart(product4, 3);
-            exampleCart.RemoveFromCart(product4, -2);
-
-            exampleCart.Checkout();
-
-            var repository = container.GetInstance<IRepository>();
-            repository.Save(exampleCart);
-
-            var testData = new TestData(products).Create();
-
-            var mediator = new Mediator(new SimpleInjectorDependencyResolver(container));
-
-            //mediator.RequestQuery(new NameTestQuery() { Name = "Chris" });
-
-            int count = 0;
-            var start = DateTime.UtcNow;
-            foreach (var cart in testData)
-            {
-                count = count + (cart as IAggregate).GetUncommittedEvents().Count;
-                repository.Save(cart);
-                //var result = DispatchEvents.Dispatch(cart, mediator);
-                //count =+ count;
-            }
-            var duration = DateTime.UtcNow - start;
-            var eventsPerSecond = (double)count / duration.TotalSeconds;
         }
     }
 }

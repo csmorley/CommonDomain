@@ -38,7 +38,7 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregates\HashCodeHelper.cs" />
     <Compile Include="Aggregates\Identity.cs" />
     <Compile Include="Aggregates\IIdentity.cs" />
+    <Compile Include="Aggregates\ValueObject.cs" />
     <Compile Include="Bus\IBus.cs" />
     <Compile Include="Bus\IHandle.cs" />
     <Compile Include="Bus\IMessageHandler.cs" />
@@ -65,24 +67,27 @@
     <Compile Include="Aggregates\ExtensionMethods.cs" />
     <Compile Include="Aggregates\HandlerForDomainEventNotFoundException.cs" />
     <Compile Include="Aggregates\RegistrationEventRouter.cs" />
-    <Compile Include="Mediator\ICommandHandler.cs" />
-    <Compile Include="Mediator\ICommandSender.cs" />
-    <Compile Include="Mediator\IEventHandler.cs" />
-    <Compile Include="Mediator\IEventPublisher.cs" />
-    <Compile Include="Mediator\IQuery.cs" />
-    <Compile Include="Mediator\IQueryHandler.cs" />
-    <Compile Include="Mediator\IQuerySender.cs" />
-    <Compile Include="Mediator\Mediator.cs" />
-    <Compile Include="Mediator\Result.cs" />
-    <Compile Include="Messaging\EventInfo.cs" />
+    <Compile Include="Infrastructre\ApplicationServices.cs" />
+    <Compile Include="Infrastructre\DomainServices.cs" />
+    <Compile Include="Messaging\ICommand.cs" />
+    <Compile Include="Messaging\ICommandHandler.cs" />
+    <Compile Include="Messaging\ICommandSender.cs" />
+    <Compile Include="Messaging\IEvent.cs" />
+    <Compile Include="Messaging\IEventHandler.cs" />
+    <Compile Include="Messaging\IEventPublisher.cs" />
+    <Compile Include="Messaging\IQuery.cs" />
+    <Compile Include="Messaging\IQueryHandler.cs" />
+    <Compile Include="Messaging\IQuerySender.cs" />
+    <Compile Include="Messaging\Mediator.cs" />
+    <Compile Include="Messaging\Result.cs" />
+    <Compile Include="Messaging\Subscriptions\EventInfo.cs" />
     <Compile Include="Messaging\EventPublisher.cs" />
     <Compile Include="Messaging\EventReceiver.cs" />
     <Compile Include="Messaging\IExternalEventConverter.cs" />
-    <Compile Include="Messaging\SubscriptionDropReason.cs" />
+    <Compile Include="Messaging\Subscriptions\SubscriptionDropReason.cs" />
     <Compile Include="Persistence\IEventStore.cs" />
     <Compile Include="ProcessManagers\SagaBase.cs" />
     <Compile Include="Messaging\EventEnvelope.cs" />
-    <Compile Include="Messaging\EventDispatcher.cs" />
     <Compile Include="Aggregates\IAggregate.cs" />
     <Compile Include="Aggregates\IDetectConflicts.cs" />
     <Compile Include="Aggregates\IMemento.cs" />
@@ -105,11 +110,8 @@
     <Compile Include="Wireup\Wiring.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

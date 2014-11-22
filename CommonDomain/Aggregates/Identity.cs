@@ -8,33 +8,32 @@ namespace CommonDomain.Aggregates
 {
     public abstract class Identity : IEquatable<Identity>, IIdentity
     {
-        protected readonly bool isConstructedWithGuid;
-        protected readonly string identityValue;
-        public bool IsConvertableToGuid { get { return this.isConstructedWithGuid; } }
-        public string IdentityValue { get { return this.identityValue; } }
+        protected string value;
 
-        public Identity()
+        // this absolutly must be fixed, do not use [JsonProperty] find alternative way to set value
+        // currently this is public read/write, big no, no for identity must be fixed
+        public string Value
         {
-            this.identityValue = Guid.NewGuid().ToString();
+            get { return this.value; }
+
+            set { this.value = value; }
         }
 
         public Identity(string value)
         {
-            this.identityValue = value;
-            this.isConstructedWithGuid = false;
+            this.Value = value;
         }
 
-        public Identity(Guid id)
+        public Identity(Guid value)
         {
-            this.identityValue = id.ToString();
-            this.isConstructedWithGuid = true;
+            this.Value = value.ToString();
         }
 
-        public bool Equals(Identity id)
+        public bool Equals(Identity identity)
         {
-            if (object.ReferenceEquals(this, id)) return true;
-            if (object.ReferenceEquals(null, id)) return false;
-            return this.identityValue.Equals(id.identityValue);
+            if (object.ReferenceEquals(this, identity)) return true;
+            if (object.ReferenceEquals(null, identity)) return false;
+            return this.value.Equals(identity.value);
         }
 
         public override bool Equals(object anotherObject)
@@ -44,28 +43,29 @@ namespace CommonDomain.Aggregates
 
         public override int GetHashCode()
         {
-            return (this.GetType().GetHashCode() * 907) + this.identityValue.GetHashCode();
+            return (this.GetType().GetHashCode() * 907) + this.value.GetHashCode();
         }
 
         public override string ToString()
         {
-            return this.GetType().Name + " [Id=" + this.identityValue + "]";
+            return this.GetType().Name + " [Id=" + this.value + "]";
         }
 
         public static implicit operator Guid(Identity identity)
         {
-            if (identity.IsConvertableToGuid == false)
-                throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as GUID");
+            Guid guid;
 
-            return new Guid(identity.IdentityValue);
+            if (Guid.TryParse(identity.Value, out guid) == false)
+            {
+                throw new InvalidCastException("not possible to express [ " + identity.Value + " ] as GUID");
+            }
+
+            return guid;
         }
 
         public static implicit operator string(Identity identity)
         {
-            if (identity.IsConvertableToGuid == true)
-                throw new InvalidCastException("not possible to express [ " + identity.IdentityValue + " ] as string");
-
-            return identity.IdentityValue;
+            return identity.Value;
         }
     }
 }

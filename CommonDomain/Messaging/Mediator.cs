@@ -7,7 +7,7 @@ using CommonDomain.Wireup;
 using CommonDomain.Messaging;
 using CommonDomain.Aggregates;
 
-namespace CommonDomain.Mediator
+namespace CommonDomain.Messaging
 {
     public class Mediator : IQuerySender, ICommandSender, IEventPublisher
     {
@@ -44,7 +44,7 @@ namespace CommonDomain.Mediator
             return response;
         }
 
-        public Result SendCommand<TCommand>(TCommand commandToSend) where TCommand : class
+        public Result SendCommand<TCommand>(TCommand commandToSend) where TCommand : ICommand
         {
             var handler = resolver.GetInstance<ICommandHandler<TCommand>>(); // get single instance
             var response = new Result();            

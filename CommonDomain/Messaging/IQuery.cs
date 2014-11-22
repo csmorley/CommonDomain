@@ -1,4 +1,4 @@
-﻿namespace CommonDomain.Mediator
+﻿namespace CommonDomain.Messaging
 {
     public interface IQuery<in T> { }
 }

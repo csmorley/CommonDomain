@@ -8,7 +8,7 @@ using System.Web;
 
 namespace CartExample.Domain.Carts
 {
-    public class CartCheckedOut
+    public class CartCheckedOut : IEvent
     {
         public CartCheckedOut(Dictionary<ProductId, int> products)
         {

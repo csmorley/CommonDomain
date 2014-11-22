@@ -1,7 +1,7 @@
-﻿namespace CommonDomain.Mediator
-{
-    using System;
+﻿using System;
 
+namespace CommonDomain.Messaging
+{
     public sealed class UnitType
     {
         public static readonly UnitType Default = new UnitType();

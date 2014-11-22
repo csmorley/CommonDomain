@@ -1,4 +1,5 @@
 ﻿using CartExample.Domain.Products;
+using CommonDomain.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Web;
 
 namespace CartExample.Domain
 {
-    public class ProductRemovedFromCart
+    public class ProductRemovedFromCart : IEvent
     {
         public ProductRemovedFromCart(ProductId id, int quantity)
         {

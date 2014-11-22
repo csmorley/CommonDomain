@@ -1,5 +1,4 @@
 ﻿using CommonDomain.Aggregates;
-using CommonDomain.Mediator;
 using CommonDomain.Messaging;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace CartExample.Infrastructure
             ulong count = 0;
             foreach (var e in events)
             {
-                var envelope = new EventEnvelope(aggregate, e);
+                var envelope = new EventEnvelope(aggregate.Identity, e as IEvent);
                 mediator.PublishEvent(envelope, false);
                 count++;
             }           

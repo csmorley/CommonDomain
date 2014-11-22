@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>@ViewBag.Total checkouts took longer than @ViewBag.Seconds seconds:</h2>
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Cart ID</th>
+                    <th>Seconds</th>
+                </tr>
+            </thead>
+
+            @foreach (var checkout in ViewBag.Data)
+            {
+                <tr>
+                    <td>@checkout.Key</td>
+                    <td>@checkout.Value</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+@section scripts
+{
+
+}

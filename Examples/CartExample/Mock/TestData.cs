@@ -16,7 +16,8 @@ namespace CartExample.Mock
         {
             this.products = products;
         }
-        public List<Cart> Create()
+
+        public List<Cart> Generate()
         {
             var items = new List<Cart>();
             var day = new DateTime(2014, 1, 1);
@@ -32,20 +33,19 @@ namespace CartExample.Mock
 
         List<Cart> CreateForDay(DateTime date)
         {
-            Random random = new Random();
             int numberToCreate;
 
             if (date.DayOfWeek == DayOfWeek.Friday || date.DayOfWeek == DayOfWeek.Saturday)
             {
-                numberToCreate = random.Next(500, 1000);
+                numberToCreate = RandomProvider.Next(100, 200);
             }
             else if (date.DayOfWeek == DayOfWeek.Sunday)
             {
-                numberToCreate = random.Next(100, 200);
+                numberToCreate = RandomProvider.Next(10, 50);
             }
             else
             {
-                numberToCreate = random.Next(200, 500);
+                numberToCreate = RandomProvider.Next(50, 100);
             }
 
             var items = new List<Cart>();
@@ -94,12 +94,6 @@ namespace CartExample.Mock
             }
 
             cart.Checkout();
-
-            if (cart.CountUniqueProducts() == 0)
-            {
-                Console.WriteLine("hmmm");
-            }
-            
 
             return cart;
         }

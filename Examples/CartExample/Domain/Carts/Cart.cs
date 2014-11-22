@@ -22,6 +22,11 @@ namespace CartExample.Domain.Carts
             this.mockCheckoutDate = mockCheckoutDate;
         }
 
+        // needed for repository creation
+        protected Cart()
+        {
+        }
+
         public void AddToCart(Product product, int quantity)
         {
             AssertCanModifyCart();
