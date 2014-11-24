@@ -54,5 +54,34 @@ namespace CartExample.Web.Controllers
 
             return View();
         }
+
+        public ActionResult Year(int year)
+        {
+            var yearData = readModel.CheckoutsByDate.Where(x => x.Key.Year == year).ToList();
+
+            List<object> data = new List<object>();
+            data.Add(new[] { "Day", "Total", "Missed Opportunities", "%", "Tweets" });
+            ulong total = 0;
+            foreach (var day in yearData)
+            {
+                ulong tweetsForDay = 0;
+                this.readModel.TweetsByDate.TryGetValue(day.Value.Day.Date, out tweetsForDay);
+
+                data.Add(new object[] {
+                    day.Value.Day.Date.DayOfWeek.ToString(),
+                    day.Value.TotalCarts,
+                    day.Value.CartsThatHadAnAbandonedItem,
+                    day.Value.PercentageWithAbandonedItems,
+                    tweetsForDay
+                });
+                total = total + day.Value.TotalCarts;
+            }
+
+            ViewBag.TotalCheckoutsForMonth = total;
+            ViewBag.Period = year;
+            ViewBag.Data = JsonConvert.SerializeObject(data);
+
+            return View("Index");
+        }
     }
 }

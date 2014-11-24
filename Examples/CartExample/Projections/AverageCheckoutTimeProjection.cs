@@ -31,16 +31,8 @@ namespace CartExample.Projections
                 TimeSpan duration = eventToHandle.CheckedOutOn - start;
                 this.database.CheckoutDurations.Add(senderId, duration.TotalSeconds);
                 this.database.StartTimes.Remove(senderId);
-                
-                double total = 0;
-                int count = this.database.CheckoutDurations.Count;
-                
-                foreach(var span in this.database.CheckoutDurations.Values)
-                {
-                    total = total + span;
-                }
-
-                this.database.AverageCheckoutTime = total / count;
+                this.database.TotalCheckoutTime = this.database.TotalCheckoutTime + duration.TotalSeconds;
+                this.database.AverageCheckoutTime = this.database.TotalCheckoutTime / this.database.CheckoutDurations.Count;
             }
         }
 

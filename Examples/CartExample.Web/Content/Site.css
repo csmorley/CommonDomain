@@ -26,9 +26,3 @@ textarea {
 ul.months {
     margin-top: 30px;
 }
-
-.months li {
-    float:left;
-    list-style-type: none;
-    margin-right: 20px;
-}

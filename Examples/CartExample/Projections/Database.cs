@@ -10,8 +10,9 @@ namespace CartExample.Projections
     {
         // used for average checkout time projection
         public readonly Dictionary<Guid, DateTime> StartTimes = new Dictionary<Guid, DateTime>();
-        public readonly Dictionary<Guid, double> CheckoutDurations = new Dictionary<Guid, double>();        
+        public readonly Dictionary<Guid, double> CheckoutDurations = new Dictionary<Guid, double>();
         public double AverageCheckoutTime;
+        public double TotalCheckoutTime;
 
         // used for adandoned items projection
         public readonly Dictionary<Guid, HashSet<string>> AddedItems = new Dictionary<Guid, HashSet<string>>();

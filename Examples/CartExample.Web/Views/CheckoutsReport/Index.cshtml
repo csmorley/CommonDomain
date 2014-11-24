@@ -8,19 +8,21 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>@ViewBag.TotalCheckoutsForMonth checkouts for @ViewBag.Month</h2>
+        <h2>@ViewBag.TotalCheckoutsForMonth checkouts for @ViewBag.Period</h2>
     </div>
-    <ul class="months">
+    <ul class="months pagination">
         @for (var i = 1; i <= 12; i++)
         {
             <li>@Html.ActionLink(i.ToString(), "Index", new { Month = i })</li>
         }
+        <li>@Html.ActionLink("2014", "Year", new { Year = 2014 })</li>
     </ul>
 </div>
-<hr />
 
-
-<div id="chart_div" style="width: 1200px; height: 600px;"></div>
+@section charts
+{
+<div id="chart_div" style="width: 100%; height: 600px;"></div>
+}
 
 @section scripts
 {
@@ -50,7 +52,7 @@
             vAxis: {title: "Sales"},
             hAxis: {title: "Month"},
             seriesType: "bars",
-            series: { 2: { type: "line" }, 3: { type: "line" } }
+            series: { 2: { type: "line" }, 3: { type: "line" } },
           };
 
           console.log("test!");
@@ -58,6 +60,10 @@
 
           var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
           chart.draw(data, options);
+
+          $(window).resize(function(){
+              chart.draw(data, options);
+          });
         }
 
     </script>

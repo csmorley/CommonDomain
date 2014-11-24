@@ -37,15 +37,15 @@ namespace CartExample.Mock
 
             if (date.DayOfWeek == DayOfWeek.Friday || date.DayOfWeek == DayOfWeek.Saturday)
             {
-                numberToCreate = RandomProvider.Next(100, 200);
+                numberToCreate = RandomProvider.Next(400, 600);
             }
             else if (date.DayOfWeek == DayOfWeek.Sunday)
             {
-                numberToCreate = RandomProvider.Next(10, 50);
+                numberToCreate = RandomProvider.Next(50, 200);
             }
             else
             {
-                numberToCreate = RandomProvider.Next(50, 100);
+                numberToCreate = RandomProvider.Next(200, 400);
             }
 
             var items = new List<Cart>();

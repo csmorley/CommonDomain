@@ -18,7 +18,7 @@ namespace CartExample.Projections
         public ulong TotalCarts;
         public ulong CartsThatHadAnAbandonedItem;
         public readonly DateTime Day;
-        public double PercentageWithAbandonedItems { get {  return (double)this.CartsThatHadAnAbandonedItem / (double)this.TotalCarts * 100; } }
+        public double PercentageWithAbandonedItems { get {  return (double)this.CartsThatHadAnAbandonedItem / (double)this.TotalCarts * 1000; } }
     }
 
     public class CheckoutStatisticsProjection : IEventHandler<ProductAddedToCart>, IEventHandler<CartCheckedOut>
