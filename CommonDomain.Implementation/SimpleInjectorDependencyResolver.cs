@@ -26,7 +26,7 @@ namespace CommonDomain.Implementation
 
         public TService GetInstance<TService>() where TService : class
         {
-            return this.GetInstance<TService>();
+            return this.container.GetInstance<TService>();
         }
 
         public object GetInstance(Type type)
